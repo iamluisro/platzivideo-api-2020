@@ -21,7 +21,8 @@
     "mkdirp": "1.0.3",
     "mongodb": "3.5.5",
     "passport": "0.4.1",
-    "passport-http": "0.3.0"
+    "passport-http": "0.3.0",
+    "passport-jwt": "4.0.0"
   },
   "devDependencies": {
     "eslint": "6.8.0",
