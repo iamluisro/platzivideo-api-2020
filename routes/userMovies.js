@@ -44,16 +44,30 @@ function userMoviesApi(app) {
     validationHandler(createUserMovieSchema),
     async function (req, res, next) {
       const { body: userMovie } = req;
+      const { userId, movieId } = userMovie;
 
       try {
-        const createdUserMovieId = await userMoviesService.createUserMovie({
-          userMovie,
-        });
+        const userMovies = await userMoviesService.getUserMovies({ userId });
+        const movieExists = userMovies.some(
+          (userMovie) => userMovie.movieId === movieId
+        );
+        console.log(`Movie exists: ${movieExists}`);
 
-        res.status(201).json({
-          data: createdUserMovieId,
-          message: 'user movie created',
-        });
+        if (movieExists) {
+          res.status(200).json({
+            exist: true,
+            message: 'movie already added to your list.',
+          });
+        } else {
+          const createdUserMovieId = await userMoviesService.createUserMovie({
+            userMovie,
+          });
+
+          res.status(201).json({
+            data: createdUserMovieId,
+            message: 'user movie created',
+          });
+        }
       } catch (error) {
         next(error);
       }
